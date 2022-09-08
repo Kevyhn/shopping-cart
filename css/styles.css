@@ -1,0 +1,226 @@
+* {
+	padding: 0;
+	margin: 0;
+	font-family: 'Poppins' ,sans-serif;
+	box-sizing: border-box;
+}
+
+:root {
+	--color-main: #03a9f4;
+}
+
+.header {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 70px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 0 40px;
+	box-shadow: 0 0 12px -5px #000;
+	background: #eee;
+	z-index: 100;
+}
+
+.logo {
+	font-weight: 200;
+	color: #555;
+}
+
+.logo b {
+	color: var(--color-main);
+}
+
+.shopping-cart-logo {
+	position: relative;
+	cursor: pointer;
+}
+
+.shopping-cart-logo .amount {
+	position: absolute;
+	width: 20px;
+	height: 20px;
+	top: -8px;
+	right: -15px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: #fff;
+	visibility: hidden;
+	border-radius: 50%;
+	background: rgb(255, 0, 0);
+}
+
+.shopping-cart span {
+	font-size: 28px;
+}
+
+.courses-add {
+	position: fixed;
+	width: 400px;
+	top: -350px;
+	right: 40px;
+	padding: 20px;
+	background: #eee;
+	transition: top 500ms;
+	box-shadow: 0 0 12px -5px #000;
+}
+
+.details {
+	display: flex;
+	align-items: center;
+}
+
+.details span {
+	width: 100%;
+}
+
+.course-details {
+	display: flex;
+	margin-bottom: 5px;
+}
+
+.details-img,
+.details-title,
+.details-price,
+.details-amount {
+	width: 100%;
+	padding-right: 10px;
+}
+
+.details-img {
+	position: relative;
+	max-height: 50px;
+	min-height: 50px;
+	margin-right: 5px;
+	overflow: hidden;
+}
+
+.details-img img{
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+#courses-added {
+	max-height: 200px;
+	margin-bottom: 10px;
+	overflow-x: hidden;
+}
+
+.courses-add button {
+	width: 100%;
+	font-size: 16px;
+	margin-top: 10px;
+	border: none;
+	padding: 3px 0;
+	color: #fff;
+	background: rgba(255, 0, 0, 0.5);
+	cursor: pointer;
+}
+
+.main {
+	width: 100%;
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	grid-gap: 20px;
+	margin: 0 auto;
+	margin-top: 100px;
+	margin-bottom: 40px;
+	padding: 0 40px;
+}
+
+.course-card {
+	padding: 20px;
+	border-radius: 6px;
+	box-shadow: 0 0 15px -10px #000;
+	background: #eee;
+}
+
+.img {
+	width: 100%;
+	height: 160px;
+	display: flex;
+	justify-content: center;
+	border-radius: 10px;
+	margin-bottom: 10px;
+	background: var(--color-main);
+	overflow: hidden;
+}
+
+img {
+	width: 100%;
+	object-fit: cover;
+}
+
+.title {
+	font-size: 22px;
+}
+
+.name {
+	font-size: 16px;
+	color: var(--color-main);
+}
+
+.stars span {
+	font-size: 15px;
+	color: yellow;
+}
+
+.price-flex {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.previous-price {
+	text-decoration: line-through;
+}
+
+.price {
+	font-size: 20px;
+	font-weight: bold;
+}
+
+.course-card button {
+	width: 100%;
+	font-size: 17px;
+	color: #fff;
+	border-radius: 10px;
+	border: none;
+	padding: 5px 0;
+	margin-top: 10px;
+	background: var(--color-main);
+	cursor: pointer;
+}
+
+@media (max-width: 1200px) {
+	.main {
+		grid-template-columns: repeat(3, 1fr);
+	}
+}
+
+@media (max-width: 950px) {
+	.header {
+		padding: 0 20px;
+	}
+
+	.main {
+		grid-template-columns: repeat(2, 1fr);
+		padding: 0 20px;
+	}
+}
+
+@media (max-width: 600px) {
+	.main {
+		grid-template-columns: repeat(1, 1fr);
+	}
+
+	.courses-add {
+		width: 100%;
+		left: 0;
+	}	
+}
