@@ -75,8 +75,8 @@ jsonData = [
 		name: "Kevvyn",
 		previousPrice: "84.00",
 		price: "13.99"
-	},];
-
+	},
+];
 jsonData.forEach(element => {
 	let cardHTML = `
 		<div class="course-card">
@@ -100,7 +100,6 @@ jsonData.forEach(element => {
 	`;
 	document.querySelector('.main').innerHTML += cardHTML; 
 });
-
 let open = false;
 document.querySelector('.shopping-cart-logo').addEventListener('click', ()=> {
 	if (open == false) {
@@ -111,20 +110,24 @@ document.querySelector('.shopping-cart-logo').addEventListener('click', ()=> {
 		open = false;
 	}
 });
-
 let total = 0;
 let discount = 0;
+let count = 0;
 let amount = document.querySelector('.amount');
 let coursesAdded = document.getElementById('courses-added');
 let addCourse = document.querySelectorAll('.add-course');
-
-addCourse.forEach((btn) => {
+let arrayId = new Set([]);
+let arrayElement = [];
+let cantTotal = 0;
+addCourse.forEach((btn, index) => {
 	btn.addEventListener('click', (e) => {
 		let course = {
 			image: e.target.parentElement.children[0].children[0].src,
 			title: e.target.parentElement.children[1].textContent,
 			price: e.target.parentElement.children[4].children[1].textContent.split('$').join(''),
-			previousPrice: e.target.parentElement.children[4].children[0].textContent.split('$').join('')
+			previousPrice: e.target.parentElement.children[4].children[0].textContent.split('$').join(''),
+			cant: 1,
+			id: index
 		};
 		let courseHTML = `
 			<div class="course-details">
@@ -133,31 +136,72 @@ addCourse.forEach((btn) => {
 				</div>
 				<div class="details-title">${course.title}</div>
 				<div class="details-price">${course.price}</div>
-				<div class="details-amount">${1}</div>
+				<div class="details-amount">${course.cant}</div>
 			</div>
 		`;
-		coursesAdded.innerHTML += courseHTML;
-		total = parseFloat(course.price) + total;
-		document.getElementById('total').textContent = total.toFixed(2);
-		discount = parseFloat(course.previousPrice) + discount;
-		document.getElementById('discount').textContent = discount.toFixed(2);
-		document.getElementById('discount').style.textDecoration = "line-through";
-		let count = coursesAdded.children.length;
-		if (count == 1) {
-			document.querySelector('.courses-add').style.top = "70px";
-			open = true;
-		}
-		amount.textContent = count;
-		amount.style.visibility = "visible";
+		if (arrayId.has(course.id)) {		
+			let newArrayElement = arrayElement.map(elements => {
+				if (elements.id === course.id) {
+					elements.cant++;
+					total = parseFloat(elements.price) + total;
+					document.getElementById('total').textContent = total.toFixed(2);
+					discount = parseFloat(elements.previousPrice) + discount;
+					document.getElementById('discount').textContent = discount.toFixed(2);
+				}
+				return elements;
+			});
+			let elementHTML = "";
+			let cant = 0;
+			newArrayElement.forEach(element => {
+				let courseHTML = `
+					<div class="course-details">
+						<div class="details-img">
+							<img src="${element.image}" alt="">
+						</div>
+						<div class="details-title">${element.title}</div>
+						<div class="details-price">${element.price}</div>
+						<div class="details-amount">${element.cant}</div>
+					</div>
+				`;	
+				elementHTML += courseHTML;
+				cant += element.cant;
+				cantTotal = cant;
+			});
+			coursesAdded.innerHTML = elementHTML;
+			amount.textContent = cantTotal;
+		} else {
+			coursesAdded.innerHTML += courseHTML;
+			arrayId.add(course.id);
+			arrayElement.push(course);
+			coursesAdded.scrollTop = coursesAdded.scrollHeight;
+			total = parseFloat(course.price) + total;
+			document.getElementById('total').textContent = total.toFixed(2);
+			discount = parseFloat(course.previousPrice) + discount;
+			document.getElementById('discount').textContent = discount.toFixed(2);
+			document.getElementById('discount').style.textDecoration = "line-through";
+			if (cantTotal >= 1) {
+				cantTotal++;
+				count = cantTotal;
+			} else count = coursesAdded.children.length;
+			if (count == 1) {
+				document.querySelector('.courses-add').style.top = "70px";
+				open = true;
+			}
+			amount.textContent = count;
+			amount.style.visibility = "visible";
+		}	
 	});
 });
-
-document.getElementById('empty').addEventListener('click', ()=> {
+document.getElementById('empy').addEventListener('click', ()=> {
 	total = 0;
-	document.getElementById('total').textContent = 0;
 	discount = 0;
+	count = 0;
+	arrayId.clear();
+	arrayElement = [];
+	cantTotal = 0;
+	document.getElementById('total').textContent = 0;	
 	document.getElementById('discount').textContent = 0;
-	coursesAdded.innerHTML = null;
+	coursesAdded.innerHTML = "";
 	amount.style.visibility = "hidden";
 	document.querySelector('.courses-add').style.top = "-350px";
 	open = false;
